@@ -24,13 +24,13 @@ Playwright MCP is a Model Context Protocol server that gives the agent browser a
 npx @playwright/mcp@latest
 ```
 
-**VS Code MCP config** (`.vscode/mcp.json` or user settings):
+**VS Code MCP config** (`.vscode/mcp.json` or user settings) — always use `--headless` flag:
 ```json
 {
   "servers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["@playwright/mcp@latest", "--headless"]
     }
   }
 }
@@ -41,10 +41,10 @@ npx @playwright/mcp@latest
 Start the app before invoking this skill:
 ```bash
 # Lerna monorepo — start the target app:
-npx lerna run start --scope=<app-name>
+yarn lerna run start --scope=<app-name>
 
 # Or from the app directory:
-npm run start
+yarn run start
 ```
 
 Confirm it is ready by checking terminal output (`terminalLastCommand`) for a success message.
@@ -55,7 +55,7 @@ Confirm it is ready by checking terminal output (`terminalLastCommand`) for a su
 
 | Tool | Purpose | Example |
 |------|---------|---------|
-| `browser_navigate` | Navigate to a URL | `browser_navigate({ url: "http://localhost:3000/login" })` |
+| `browser_navigate` | Navigate to a URL | `browser_navigate({ url: "http://localhost:8000/login" })` |
 | `browser_screenshot` | Capture current page state | `browser_screenshot({ name: "login-page" })` |
 | `browser_click` | Click an element | `browser_click({ selector: "button[type=submit]" })` |
 | `browser_fill` | Fill an input field | `browser_fill({ selector: "#email", value: "user@example.com" })` |
@@ -139,7 +139,7 @@ Report format:
 
 **Feature**: <name>
 **Branch**: feature/<name>
-**App URL**: http://localhost:<port>
+**App URL**: http://localhost:8000
 **Date**: YYYY-MM-DD
 
 ### Results
@@ -167,7 +167,7 @@ Always close the browser and stop the dev server after verification:
 
 ```bash
 # Stop dev server (replace port):
-kill $(lsof -t -i:3000) 2>/dev/null || true
+kill $(lsof -t -i:8000) 2>/dev/null || true
 ```
 
 ---

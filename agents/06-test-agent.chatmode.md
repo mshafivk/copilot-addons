@@ -30,11 +30,13 @@ You verify that the implemented feature works correctly by running the applicati
 
 ### 1. Confirm Playwright MCP is available
 
-Playwright MCP must be configured in VS Code settings. If not yet installed:
+Playwright MCP must be configured in VS Code settings in **headless mode**. If not yet installed:
 ```bash
 # Install Playwright MCP server
 npx @playwright/mcp@latest --help
 ```
+
+Ensure the MCP server is configured with the `--headless` flag (see `skills/playwright-verify/SKILL.md` for setup).
 
 Playwright MCP tools you will use:
 - `browser_navigate` — navigate to a URL
@@ -53,14 +55,13 @@ Playwright MCP tools you will use:
 cat package.json | grep -A 10 '"scripts"'
 
 # Common Lerna monorepo patterns:
-npm run start                                    # root dev server
-npx lerna run start --scope=<app-name>           # specific app
-npx lerna run start --scope=<app-name> -- --port 3000
+yarn run start                                   # root dev server
+yarn lerna run start --scope=<app-name>          # specific app
 ```
 
 Wait for "Compiled successfully" or equivalent ready message in terminal output (`terminalLastCommand`).
 
-Note the port the app is running on (default: `http://localhost:3000`).
+Note the port the app is running on (default: `http://localhost:8000`).
 
 ---
 
@@ -119,7 +120,7 @@ After testing the new feature, briefly check adjacent flows:
 ## Test Report: Phase <N> — <phase name>
 
 **Branch**: feature/<name>
-**App URL**: http://localhost:<port>
+**App URL**: http://localhost:8000
 **Date**: YYYY-MM-DD
 
 ### Status: PASSED ✅  /  FAILED ❌
@@ -156,7 +157,7 @@ After testing is complete, stop the dev server:
 
 ```bash
 # Kill by port (replace 3000 with actual port):
-kill $(lsof -t -i:3000) 2>/dev/null || true
+kill $(lsof -t -i:8000) 2>/dev/null || true
 ```
 
 ---

@@ -24,7 +24,7 @@ Always invoke for changes that include:
 - File uploads or downloads
 - User-generated content rendered to the DOM
 - Environment variables or secrets handling
-- New npm dependencies
+- New dependencies added to `package.json`
 
 ---
 
@@ -86,9 +86,9 @@ Work through each category. Mark each item as ✅ Pass, ❌ Fail, or ⚠️ Need
 
 ### F. Dependencies
 
-- [ ] New npm dependencies checked for known vulnerabilities:
+- [ ] New dependencies checked for known vulnerabilities:
   ```bash
-  npm audit --audit-level=moderate
+  yarn audit --level moderate
   ```
 - [ ] New dependencies have recent maintenance activity (check package age and last publish date)
 - [ ] No dependencies added that replicate functionality already in the codebase

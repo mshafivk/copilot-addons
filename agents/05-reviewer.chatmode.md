@@ -43,7 +43,7 @@ Work through each section. Mark every item explicitly.
 - [ ] No unused imports or variables (check `problems` tool)
 - [ ] No hardcoded magic strings that should be named constants
 - [ ] Functional components only — no class components introduced
-- [ ] No inline styles added where CSS/styled patterns already exist
+- [ ] No inline styles added — styles belong in `.less` files following existing Less patterns
 
 ### 3. Test coverage
 - [ ] Unit tests exist for all new logic-bearing code
@@ -61,7 +61,7 @@ Work through each section. Mark every item explicitly.
 ### 5. Monorepo conventions
 - [ ] New shared code is in the correct package (not duplicated in an app)
 - [ ] Cross-package imports use the package name, not relative `../../` paths across packages
-- [ ] `package.json` updated if new npm dependencies were added
+- [ ] `package.json` updated if new dependencies were added and `yarn.lock` is committed
 - [ ] New exports are added to the package's `index.ts` / `index.js` barrel
 
 ### 6. Commit hygiene

@@ -60,7 +60,7 @@ git pull origin feature/<feature-name>
 - Functional components only — no class components
 - Hooks for all state and side effects
 - Props destructured in the function signature
-- No inline styles — use existing CSS/styled-components patterns in the codebase
+- No inline styles — use Less (`.less` files) following existing patterns in the codebase
 
 ### TypeScript (`.tsx` / `.ts` files)
 - Strict types throughout — no `any` unless truly unavoidable, and then add a one-line comment explaining why

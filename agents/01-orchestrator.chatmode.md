@@ -116,7 +116,7 @@ After each delegation, output a one-line status:
 
 ## Guardrails
 
-- Do NOT edit any source file (`.ts`, `.tsx`, `.js`, `.jsx`, `.css`, etc.)
+- Do NOT edit any source file (`.ts`, `.tsx`, `.js`, `.jsx`, `.less`, etc.)
 - Do NOT write commit messages — Coder owns that
 - Do NOT approve a phase unless both Reviewer and Test Agent have signed off
 - Do NOT start a parallel phase if it depends on an in-progress sequential phase
