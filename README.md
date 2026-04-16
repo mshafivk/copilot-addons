@@ -18,7 +18,7 @@ Agents are GitHub Copilot custom agents (previously called custom chat modes). E
 ---
 description: Shown in the agent picker (Orchestrator only — pipeline agents are hidden)
 tools: [codebase, editFiles, runCommands, ...]  # platform-enforced restrictions
-model: claude-opus-4-7                           # pinned model for this agent role
+model: gpt-4o                                    # free on paid plans; or claude-sonnet-4-6 (1×) for critical roles
 user-invocable: true                             # false = hidden from picker, subagent only
 agents: [02-planner, 03-architect, ...]          # restricts which agents this one can invoke
 handoffs:                                        # UI routing buttons shown in chat
@@ -161,14 +161,16 @@ Add Playwright MCP to your VS Code MCP configuration (`.vscode/mcp.json`):
 
 The agents specify models in their frontmatter. Check that these models are available in your Copilot subscription under **VS Code Settings → GitHub Copilot → Chat: Models**. If a model is unavailable, update the `model:` field in the relevant `.agent.md` file to one that is.
 
-| Agent | Model | Reason |
-|-------|-------|--------|
-| Orchestrator | `claude-opus-4-7` | Complex multi-step coordination and reasoning |
-| Architect | `claude-opus-4-7` | Technical design decisions and trade-off analysis |
-| Planner | `claude-sonnet-4-6` | Document analysis and structured writing |
-| Coder | `claude-sonnet-4-6` | Fast, high-quality code generation |
-| Reviewer | `claude-sonnet-4-6` | Diff analysis and pattern recognition |
-| Test Agent | `claude-sonnet-4-6` | Browser interaction and failure diagnosis |
+| Agent | Model | Premium cost | Reason |
+|-------|-------|-------------|--------|
+| Orchestrator | `gpt-4o` | **Free** | Pure coordination — no code; GPT-4o excels at structured delegation |
+| Planner | `gpt-4o` | **Free** | Document analysis and structured writing |
+| Architect | `claude-sonnet-4-6` | 1× | Critical design decisions — Claude quality justified; runs once per feature |
+| Coder | `gpt-4.1` | **Free** | Strongest free coder; runs most frequently — biggest cost impact |
+| Reviewer | `gpt-4o` | **Free** | Excellent at diff analysis and structured review output |
+| Test Agent | `gpt-4o` | **Free** | Good at UI interaction reasoning and structured reporting |
+
+> **Cost note**: `gpt-4o` and `gpt-4.1` consume no premium requests on paid Copilot plans. `claude-sonnet-4-6` uses a 1× multiplier. This setup costs ~1 premium unit per full pipeline run vs ~19 with the previous all-Claude configuration. If `claude-sonnet-4-6` is unavailable on your plan, `gpt-4.1` is a strong free alternative for the Architect.
 
 ### Step 6 — Start a feature
 

@@ -10,7 +10,7 @@ tools:
   - githubRepo
   - editFiles
   - runCommands
-model: claude-opus-4-7
+model: gpt-4o
 user-invocable: true
 agents:
   - 02-planner

@@ -10,7 +10,7 @@ tools:
   - problems
   - usages
   - runCommands
-model: claude-sonnet-4-6
+model: gpt-4o
 user-invocable: false
 ---
 

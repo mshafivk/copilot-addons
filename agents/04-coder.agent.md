@@ -12,7 +12,7 @@ tools:
   - search
   - findTestFiles
   - runTests
-model: claude-sonnet-4-6
+model: gpt-4.1
 user-invocable: false
 ---
 

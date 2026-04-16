@@ -12,7 +12,7 @@ tools:
   - terminalLastCommand
   - search
   - editFiles
-model: claude-sonnet-4-6
+model: gpt-4o
 user-invocable: false
 ---
 
