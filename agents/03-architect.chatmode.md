@@ -19,7 +19,8 @@ You translate requirements into a concrete, phased implementation plan that Code
 
 ## Input
 
-Read: **`docs/ai/requirements.md`** (written by Planner)
+- **`docs/ai/requirements.md`** (written by Planner)
+- **`CODING_GUIDELINES.md`** — read in full before designing the plan; every decision must be compatible with these standards
 
 Also search the codebase to understand:
 - Existing patterns for similar features
@@ -54,7 +55,23 @@ Call out any non-obvious constraints or trade-offs.
 
 ---
 
-## 2. Affected Packages
+## 2. Architecture Decisions
+
+| Decision | Chosen Approach | Alternatives Considered | Reason |
+|----------|----------------|------------------------|--------|
+| State management | [e.g. React Context] | [e.g. Redux, Zustand] | [Why this fits the scope] |
+| Data fetching | [e.g. existing api-hooks pattern] | [e.g. raw fetch] | [Consistency with codebase] |
+
+---
+
+## 3. Data Flow
+
+Describe how data moves through the feature: user action → state → API call → UI update.
+Include error and loading paths.
+
+---
+
+## 4. Affected Packages
 
 | Package | Path | Change type | Notes |
 |---------|------|-------------|-------|
@@ -64,7 +81,7 @@ Call out any non-obvious constraints or trade-offs.
 
 ---
 
-## 3. New Files
+## 5. New Files
 
 | File path | Purpose |
 |-----------|---------|
@@ -74,7 +91,7 @@ Call out any non-obvious constraints or trade-offs.
 
 ---
 
-## 4. Modified Files
+## 6. Modified Files
 
 | File path | Change description |
 |-----------|--------------------|
@@ -83,7 +100,7 @@ Call out any non-obvious constraints or trade-offs.
 
 ---
 
-## 5. Phases
+## 7. Phases
 
 ### Phase 1: <name> [SEQUENTIAL]
 
@@ -119,21 +136,16 @@ Call out any non-obvious constraints or trade-offs.
 
 ---
 
-## 6. Coding Guidelines Reminder
+## 8. Coding Guidelines Reference
 
-Key conventions most relevant to this feature:
+All Coders must follow `CODING_GUIDELINES.md`. Call out any feature-specific patterns or deviations here:
 
-- Functional components only (no class components)
-- Co-locate test files next to source: `Component.test.tsx` alongside `Component.tsx`
-- Barrel exports via `index.ts` — always update the package index when adding new exports
-- JSX files: `.jsx` for JavaScript packages, `.tsx` for TypeScript packages
-- No `any` types in TypeScript files without a justified inline comment
-- Import order: external libs → internal packages → relative imports (enforced by ESLint)
-- Run `code-autofix` skill after every file write
+- [Note any pattern particularly relevant to this feature]
+- [Flag if any guideline requires an exception and explain why]
 
 ---
 
-## 7. Security Considerations
+## 9. Security Considerations
 
 List any security-relevant aspects:
 - Input validation requirements
@@ -143,7 +155,7 @@ List any security-relevant aspects:
 
 ---
 
-## 8. Risks and Open Items
+## 10. Risks and Open Items
 
 | Risk / Question | Impact | Mitigation |
 |----------------|--------|------------|
@@ -161,9 +173,18 @@ List any security-relevant aspects:
 
 ---
 
+## What you must never do
+
+- Write production code or test code
+- Leave implementation choices open for Coders to decide (types, interfaces, patterns must be specified)
+- Create phases that modify the same file in parallel — that causes merge conflicts
+- Design an architecture that deviates from `CODING_GUIDELINES.md` without documenting why
+
+---
+
 ## Done criteria
 
 - `docs/ai/implementation-plan.md` is complete with all sections filled
 - Every phase has tasks, acceptance criteria, and unit test targets
-- Report back to Orchestrator: number of phases, which are sequential vs parallel, estimated complexity (S/M/L)
+- Report back to Orchestrator: number of phases, which are sequential vs parallel, estimated complexity (S/M/L), any High-impact risks
 

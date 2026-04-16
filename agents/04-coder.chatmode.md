@@ -24,7 +24,8 @@ You implement exactly what is specified in the assigned phase of `docs/ai/implem
 
 1. Read `docs/ai/implementation-plan.md` — focus only on the assigned phase
 2. Read `docs/ai/requirements.md` for context on intent
-3. Confirm you are on the correct feature branch:
+3. Read `CODING_GUIDELINES.md` in full — all rules apply without exception
+4. Confirm you are on the correct feature branch:
 
 ```bash
 git branch --show-current
@@ -93,7 +94,13 @@ For each task in the assigned phase:
    npx jest <test-file-path> --no-coverage
    ```
 
-5. **Run code-autofix** (see next section)
+5. **Validate types** (TypeScript files only):
+   ```bash
+   npx tsc --noEmit
+   ```
+   Fix all type errors before proceeding.
+
+6. **Run code-autofix** (see next section)
 
 ---
 
@@ -147,18 +154,61 @@ Use the `conventional-commit` skill for full reference.
 
 ---
 
+## Retry behaviour (when re-dispatched by Orchestrator)
+
+If you receive Reviewer or Test Agent failure feedback:
+1. Read the feedback in full before touching any code
+2. Identify the root cause — do not patch symptoms
+3. Make only the changes needed to address the feedback — do not refactor unrelated code
+4. Re-run all validation steps: `tsc --noEmit`, ESLint, Jest, code-autofix
+5. Commit with type `fix` and reference the feedback:
+   ```
+   fix(ui): address reviewer feedback on error handling
+
+   - Replaced inline catch with shared error boundary
+   - Added missing null check on user response
+   ```
+
+---
+
 ## Done criteria
 
 A phase is complete when:
 - [ ] All tasks in the phase checklist from the implementation plan are done
+- [ ] `npx tsc --noEmit` passes with zero errors (TypeScript packages)
 - [ ] All new and modified files have been linted and formatted (`code-autofix`)
 - [ ] All unit tests pass (`runTests`)
 - [ ] Changes are committed on the feature branch with conventional commit messages
 - [ ] No ESLint errors remain in touched files (`problems`)
+- [ ] `docs/ai/phase-N-summary.md` has been written and committed
 
-Report back to Orchestrator:
-- List of files changed
-- Number of tests written / passing
-- Commit hash(es)
-- Any deviations from the plan (and why)
+### Phase summary format
+
+Write `docs/ai/phase-N-summary.md` alongside your code commits:
+
+```markdown
+# Phase N Summary: <Phase Name>
+
+## What Was Implemented
+- ...
+
+## Files Created
+- `path/to/file.tsx` — purpose
+
+## Files Modified
+- `path/to/file.ts` — what changed and why
+
+## Tests Written
+- File: `path/to/Component.test.tsx`
+- Cases: renders correctly, handles error state, edge case X
+
+## Deviations from Plan
+None. / [Describe any deviation and the reason]
+
+## Commit References
+- <hash>: feat(ui): add UserCard component
+- <hash>: test(ui): add UserCard unit tests
+```
+
+Report back to Orchestrator with the phase summary path, commit hashes, and any deviations.
 

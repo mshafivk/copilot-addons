@@ -136,6 +136,20 @@ interface User {
 | # | Question | Blocking? | Owner |
 |---|----------|-----------|-------|
 | 1 | [Question] | Yes / No | [Name] |
+
+---
+
+## 10. Acceptance Checklist (for Test Agent)
+
+High-level E2E scenarios the Test Agent will execute. One row per critical user flow.
+Map each to its FR or NFR so the Test Agent can trace failures back to requirements.
+
+| Test ID | Requirement | Scenario | Type |
+|---------|-------------|----------|------|
+| T01 | FR-001 | [User does X and sees Y] | happy path |
+| T02 | FR-001 | [User does X with invalid input and sees error] | error path |
+| T03 | NFR-001 | [Page loads within threshold on target device] | performance |
+| T04 | NFR-002 | [All interactive elements keyboard-navigable] | accessibility |
 ```
 
 ---

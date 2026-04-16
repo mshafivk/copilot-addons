@@ -30,6 +30,12 @@ Skills are reusable, self-contained instruction sets that tell an agent exactly 
 | `security-review` | `skills/security-review/SKILL.md` | OWASP-aligned security checklist for changed code before merging. |
 | `playwright-verify` | `skills/playwright-verify/SKILL.md` | Browser-based feature verification using Playwright MCP. |
 
+### Templates
+
+| Template | File | Description |
+|----------|------|-------------|
+| `CODING_GUIDELINES` | `templates/CODING_GUIDELINES.md` | Customisable coding standards reference shared across all agents. Copy to your repository root and adapt to your project. |
+
 ---
 
 ## Multi-agent pipeline overview
@@ -65,9 +71,12 @@ Every agent reads and writes to `docs/ai/` in the repository root:
 
 | File | Written by | Purpose |
 |------|-----------|---------|
-| `docs/ai/requirements.md` | Planner | Functional/non-functional requirements + API-to-UI mapping |
+| `docs/ai/requirements.md` | Planner | Requirements + acceptance checklist (Section 10) for Test Agent |
 | `docs/ai/implementation-plan.md` | Architect | Technical plan, phases, acceptance criteria |
 | `docs/ai/phase-status.md` | Orchestrator | Phase-by-phase progress tracking |
+| `docs/ai/phase-N-summary.md` | Coder | Per-phase implementation summary, files changed, commit refs |
+| `docs/ai/test-report.md` | Test Agent | E2E results, performance, accessibility, sign-off |
+| `docs/ai/session-log.md` | Orchestrator | Running log of all dispatches and outcomes |
 
 ---
 
@@ -83,7 +92,15 @@ cp agents/*.chatmode.md /path/to/your-project/.github/chatmodes/
 
 GitHub Copilot in VS Code discovers chat modes from `.github/chatmodes/*.chatmode.md`.
 
-### Step 2 — Copy skills to your project
+### Step 2 — Copy and customise CODING_GUIDELINES
+
+```bash
+cp templates/CODING_GUIDELINES.md /path/to/your-project/CODING_GUIDELINES.md
+```
+
+Edit it to match your project's actual conventions (styling framework, import alias, test runner, package names, etc.). All agents reference this file — keeping it accurate is critical.
+
+### Step 3 — Copy skills to your project
 
 Copy the skill folders you need to your repository:
 
@@ -144,15 +161,17 @@ copilot-addons/
 │   ├── 04-coder.chatmode.md
 │   ├── 05-reviewer.chatmode.md
 │   └── 06-test-agent.chatmode.md
-└── skills/
-    ├── code-autofix/
-    │   └── SKILL.md
-    ├── conventional-commit/
-    │   └── SKILL.md
-    ├── security-review/
-    │   └── SKILL.md
-    └── playwright-verify/
-        └── SKILL.md
+├── skills/
+│   ├── code-autofix/
+│   │   └── SKILL.md
+│   ├── conventional-commit/
+│   │   └── SKILL.md
+│   ├── security-review/
+│   │   └── SKILL.md
+│   └── playwright-verify/
+│       └── SKILL.md
+└── templates/
+    └── CODING_GUIDELINES.md   # copy to your repo root and customise
 ```
 
 ---
