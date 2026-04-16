@@ -12,6 +12,8 @@ tools:
   - terminalLastCommand
   - search
   - editFiles
+model: claude-sonnet-4-6
+user-invocable: false
 ---
 
 # Test Agent

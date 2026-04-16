@@ -12,6 +12,8 @@ tools:
   - search
   - findTestFiles
   - runTests
+model: claude-sonnet-4-6
+user-invocable: false
 ---
 
 # Coder

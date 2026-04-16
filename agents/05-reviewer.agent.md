@@ -10,6 +10,8 @@ tools:
   - problems
   - usages
   - runCommands
+model: claude-sonnet-4-6
+user-invocable: false
 ---
 
 # Reviewer

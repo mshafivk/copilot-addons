@@ -12,6 +12,22 @@ Agents are GitHub Copilot custom agents (previously called custom chat modes). E
 
 > **Format**: `.agent.md` files — the current VS Code Copilot format. Discovered from the path(s) configured in the `chat.agentFilesLocations` VS Code setting (default: `.github/agents/`).
 
+**Frontmatter schema reference**
+
+```yaml
+---
+description: Shown in the agent picker (Orchestrator only — pipeline agents are hidden)
+tools: [codebase, editFiles, runCommands, ...]  # platform-enforced restrictions
+model: claude-opus-4-7                           # pinned model for this agent role
+user-invocable: true                             # false = hidden from picker, subagent only
+agents: [02-planner, 03-architect, ...]          # restricts which agents this one can invoke
+handoffs:                                        # UI routing buttons shown in chat
+  - agent: 02-planner
+    label: "→ Start Planning"
+    prompt: "Pre-filled prompt sent to the target agent"
+---
+```
+
 | Agent | File | Role |
 |-------|------|------|
 | Orchestrator | `agents/01-orchestrator.agent.md` | Coordinates end-to-end delivery. Delegates to all other agents. Never writes code. |
@@ -112,6 +128,20 @@ cp -r skills/security-review     /path/to/your-project/skills/
 cp -r skills/playwright-verify   /path/to/your-project/skills/
 ```
 
+Add the `skills/` folder to VS Code's skill discovery by adding this to your workspace settings (`.vscode/settings.json`):
+
+```json
+{
+  "chat.agentSkillsLocations": ["skills"]
+}
+```
+
+Once configured, skills are available as **slash commands** in Copilot Chat:
+- `/code-autofix` — fix lint and formatting on edited files
+- `/conventional-commit` — stage and commit with conventional format
+- `/security-review` — run OWASP security checklist
+- `/playwright-verify` — browser verification via Playwright MCP
+
 ### Step 4 — Configure Playwright MCP (for Test Agent)
 
 Add Playwright MCP to your VS Code MCP configuration (`.vscode/mcp.json`):
@@ -127,11 +157,24 @@ Add Playwright MCP to your VS Code MCP configuration (`.vscode/mcp.json`):
 }
 ```
 
-### Step 5 — Start a feature
+### Step 5 — Verify model availability
+
+The agents specify models in their frontmatter. Check that these models are available in your Copilot subscription under **VS Code Settings → GitHub Copilot → Chat: Models**. If a model is unavailable, update the `model:` field in the relevant `.agent.md` file to one that is.
+
+| Agent | Model | Reason |
+|-------|-------|--------|
+| Orchestrator | `claude-opus-4-7` | Complex multi-step coordination and reasoning |
+| Architect | `claude-opus-4-7` | Technical design decisions and trade-off analysis |
+| Planner | `claude-sonnet-4-6` | Document analysis and structured writing |
+| Coder | `claude-sonnet-4-6` | Fast, high-quality code generation |
+| Reviewer | `claude-sonnet-4-6` | Diff analysis and pattern recognition |
+| Test Agent | `claude-sonnet-4-6` | Browser interaction and failure diagnosis |
+
+### Step 6 — Start a feature
 
 1. Open GitHub Copilot Chat in VS Code
-2. Select **Orchestrator** from the agent picker
-3. Describe your feature — the Orchestrator will guide you through the full pipeline
+2. Select **Orchestrator** from the agent picker (pipeline agents are hidden from the picker — they are only reachable via Orchestrator handoff buttons)
+3. Describe your feature — use the handoff buttons to route between agents
 
 ---
 

@@ -9,6 +9,8 @@ tools:
   - editFiles
   - search
   - usages
+model: claude-opus-4-7
+user-invocable: false
 ---
 
 # Architect
