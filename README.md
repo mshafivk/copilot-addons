@@ -6,18 +6,20 @@ A collection of **custom agents**, **skills**, and **prompts** that extend GitHu
 
 ## What's inside
 
-### Custom Agents (Chat Modes)
+### Custom Agents
 
-Agents are specialised GitHub Copilot chat modes. Each agent has a focused role, a restricted tool set, and a detailed system prompt. Together they form a complete multi-agent orchestration pipeline for feature development.
+Agents are GitHub Copilot custom agents (previously called custom chat modes). Each has a focused role, a restricted tool set, and a detailed system prompt. Together they form a complete multi-agent orchestration pipeline for feature development.
+
+> **Format**: `.agent.md` files — the current VS Code Copilot format. Discovered from the path(s) configured in the `chat.agentFilesLocations` VS Code setting (default: `.github/agents/`).
 
 | Agent | File | Role |
 |-------|------|------|
-| Orchestrator | `agents/01-orchestrator.chatmode.md` | Coordinates end-to-end delivery. Delegates to all other agents. Never writes code. |
-| Planner | `agents/02-planner.chatmode.md` | Breaks down a feature request into structured requirements (`docs/ai/requirements.md`). |
-| Architect | `agents/03-architect.chatmode.md` | Translates requirements into a phased implementation plan (`docs/ai/implementation-plan.md`). |
-| Coder | `agents/04-coder.chatmode.md` | Implements a phase: writes code + tests (TDD), runs autofix, commits with conventional format. |
-| Reviewer | `agents/05-reviewer.chatmode.md` | Reviews Coder output against the plan and coding guidelines before tests run. |
-| Test Agent | `agents/06-test-agent.chatmode.md` | Verifies the feature end-to-end using Playwright MCP. |
+| Orchestrator | `agents/01-orchestrator.agent.md` | Coordinates end-to-end delivery. Delegates to all other agents. Never writes code. |
+| Planner | `agents/02-planner.agent.md` | Breaks down a feature request into structured requirements (`docs/ai/requirements.md`). |
+| Architect | `agents/03-architect.agent.md` | Translates requirements into a phased implementation plan (`docs/ai/implementation-plan.md`). |
+| Coder | `agents/04-coder.agent.md` | Implements a phase: writes code + tests (TDD), runs autofix, commits with conventional format. |
+| Reviewer | `agents/05-reviewer.agent.md` | Reviews Coder output against the plan and coding guidelines before tests run. |
+| Test Agent | `agents/06-test-agent.agent.md` | Verifies the feature end-to-end using Playwright MCP. |
 
 ### Skills
 
@@ -84,13 +86,14 @@ Every agent reads and writes to `docs/ai/` in the repository root:
 
 ### Step 1 — Copy agents to your project
 
-Copy the `agents/` folder contents to `.github/chatmodes/` in your repository:
+Copy the `agents/` folder contents to `.github/agents/` in your repository:
 
 ```bash
-cp agents/*.chatmode.md /path/to/your-project/.github/chatmodes/
+mkdir -p /path/to/your-project/.github/agents
+cp agents/*.agent.md /path/to/your-project/.github/agents/
 ```
 
-GitHub Copilot in VS Code discovers chat modes from `.github/chatmodes/*.chatmode.md`.
+VS Code Copilot discovers agents from the path(s) set in `chat.agentFilesLocations` (default: `.github/agents/`). You can verify or change this in VS Code settings.
 
 ### Step 2 — Copy and customise CODING_GUIDELINES
 
@@ -102,16 +105,14 @@ Edit it to match your project's actual conventions (styling framework, import al
 
 ### Step 3 — Copy skills to your project
 
-Copy the skill folders you need to your repository:
-
 ```bash
-cp -r skills/code-autofix       /path/to/your-project/skills/
+cp -r skills/code-autofix        /path/to/your-project/skills/
 cp -r skills/conventional-commit /path/to/your-project/skills/
-cp -r skills/security-review    /path/to/your-project/skills/
-cp -r skills/playwright-verify  /path/to/your-project/skills/
+cp -r skills/security-review     /path/to/your-project/skills/
+cp -r skills/playwright-verify   /path/to/your-project/skills/
 ```
 
-### Step 3 — Configure Playwright MCP (for Test Agent)
+### Step 4 — Configure Playwright MCP (for Test Agent)
 
 Add Playwright MCP to your VS Code MCP configuration (`.vscode/mcp.json`):
 
@@ -120,22 +121,52 @@ Add Playwright MCP to your VS Code MCP configuration (`.vscode/mcp.json`):
   "servers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["@playwright/mcp@latest", "--headless"]
     }
   }
 }
 ```
 
-Install the MCP server:
-```bash
-npx @playwright/mcp@latest
-```
-
-### Step 4 — Start a feature
+### Step 5 — Start a feature
 
 1. Open GitHub Copilot Chat in VS Code
-2. Switch to **Orchestrator** mode from the chat mode picker
+2. Select **Orchestrator** from the agent picker
 3. Describe your feature — the Orchestrator will guide you through the full pipeline
+
+---
+
+## Workspace layout (your project)
+
+```
+your-project/
+├── .github/
+│   └── agents/                        ← VS Code Copilot discovers agents here
+│       ├── 01-orchestrator.agent.md
+│       ├── 02-planner.agent.md
+│       ├── 03-architect.agent.md
+│       ├── 04-coder.agent.md
+│       ├── 05-reviewer.agent.md
+│       └── 06-test-agent.agent.md
+├── .vscode/
+│   └── mcp.json                       ← Playwright MCP server config
+├── skills/                            ← referenced by agents during sessions
+│   ├── code-autofix/SKILL.md
+│   ├── conventional-commit/SKILL.md
+│   ├── security-review/SKILL.md
+│   └── playwright-verify/SKILL.md
+├── CODING_GUIDELINES.md               ← shared by all agents (repo root)
+├── docs/
+│   └── ai/                            ← written by agents at runtime
+│       ├── requirements.md
+│       ├── implementation-plan.md
+│       ├── phase-status.md
+│       ├── phase-N-summary.md
+│       ├── test-report.md
+│       └── session-log.md
+├── packages/
+├── apps/
+└── lerna.json
+```
 
 ---
 
@@ -145,7 +176,8 @@ The agents and skills are tuned for:
 - **React JSX** packages (functional components, hooks)
 - **TypeScript** packages (strict types, interfaces)
 - **Lerna monorepo** structure (per-package ESLint/Prettier, cross-package imports)
-- **ESLint + Prettier** (code-autofix skill handles both)
+- **Less** for styling (`.less` files co-located with components)
+- **Yarn** as the package manager
 - **Jest** unit tests co-located with source files
 
 ---
@@ -155,23 +187,19 @@ The agents and skills are tuned for:
 ```
 copilot-addons/
 ├── agents/
-│   ├── 01-orchestrator.chatmode.md
-│   ├── 02-planner.chatmode.md
-│   ├── 03-architect.chatmode.md
-│   ├── 04-coder.chatmode.md
-│   ├── 05-reviewer.chatmode.md
-│   └── 06-test-agent.chatmode.md
+│   ├── 01-orchestrator.agent.md
+│   ├── 02-planner.agent.md
+│   ├── 03-architect.agent.md
+│   ├── 04-coder.agent.md
+│   ├── 05-reviewer.agent.md
+│   └── 06-test-agent.agent.md
 ├── skills/
-│   ├── code-autofix/
-│   │   └── SKILL.md
-│   ├── conventional-commit/
-│   │   └── SKILL.md
-│   ├── security-review/
-│   │   └── SKILL.md
-│   └── playwright-verify/
-│       └── SKILL.md
+│   ├── code-autofix/SKILL.md
+│   ├── conventional-commit/SKILL.md
+│   ├── security-review/SKILL.md
+│   └── playwright-verify/SKILL.md
 └── templates/
-    └── CODING_GUIDELINES.md   # copy to your repo root and customise
+    └── CODING_GUIDELINES.md           ← copy to your repo root and customise
 ```
 
 ---
