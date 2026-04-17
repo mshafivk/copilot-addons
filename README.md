@@ -30,12 +30,12 @@ handoffs:                                        # UI routing buttons shown in c
 
 | Agent | File | Role |
 |-------|------|------|
-| Orchestrator | `agents/01-orchestrator.agent.md` | Coordinates end-to-end delivery. Delegates to all other agents. Never writes code. |
-| Planner | `agents/02-planner.agent.md` | Breaks down a feature request into structured requirements (`docs/ai/requirements.md`). |
-| Architect | `agents/03-architect.agent.md` | Translates requirements into a phased implementation plan (`docs/ai/implementation-plan.md`). |
-| Coder | `agents/04-coder.agent.md` | Implements a phase: writes code + tests (TDD), runs autofix, commits with conventional format. |
-| Reviewer | `agents/05-reviewer.agent.md` | Reviews Coder output against the plan and coding guidelines before tests run. |
-| Test Agent | `agents/06-test-agent.agent.md` | Verifies the feature end-to-end using Playwright MCP. |
+| Orchestrator | `agents/orchestrator.agent.md` | Coordinates end-to-end delivery. Delegates to all other agents. Never writes code. |
+| Planner | `agents/planner.agent.md` | Breaks down a feature request into structured requirements (`docs/ai/requirements.md`). |
+| Architect | `agents/architect.agent.md` | Translates requirements into a phased implementation plan (`docs/ai/implementation-plan.md`). |
+| Coder | `agents/coder.agent.md` | Implements a phase: writes code + tests (TDD), runs autofix, commits with conventional format. |
+| Reviewer | `agents/reviewer.agent.md` | Reviews Coder output against the plan and coding guidelines before tests run. |
+| Test Agent | `agents/test-agent.agent.md` | Verifies the feature end-to-end using Playwright MCP. |
 
 ### Skills
 
@@ -107,6 +107,9 @@ Copy the `agents/` folder contents to `.github/agents/` in your repository:
 ```bash
 mkdir -p /path/to/your-project/.github/agents
 cp agents/*.agent.md /path/to/your-project/.github/agents/
+
+# Agent IDs are derived from filenames (without .agent.md):
+# orchestrator, planner, architect, coder, reviewer, test-agent
 ```
 
 VS Code Copilot discovers agents from the path(s) set in `chat.agentFilesLocations` (default: `.github/agents/`). You can verify or change this in VS Code settings.
@@ -186,12 +189,12 @@ The agents specify models in their frontmatter. Check that these models are avai
 your-project/
 ├── .github/
 │   └── agents/                        ← VS Code Copilot discovers agents here
-│       ├── 01-orchestrator.agent.md
-│       ├── 02-planner.agent.md
-│       ├── 03-architect.agent.md
-│       ├── 04-coder.agent.md
-│       ├── 05-reviewer.agent.md
-│       └── 06-test-agent.agent.md
+│       ├── orchestrator.agent.md      ← only this appears in the agent picker
+│       ├── planner.agent.md           ← hidden; reachable via Orchestrator handoffs
+│       ├── architect.agent.md
+│       ├── coder.agent.md
+│       ├── reviewer.agent.md
+│       └── test-agent.agent.md
 ├── .vscode/
 │   └── mcp.json                       ← Playwright MCP server config
 ├── skills/                            ← referenced by agents during sessions
@@ -232,12 +235,12 @@ The agents and skills are tuned for:
 ```
 copilot-addons/
 ├── agents/
-│   ├── 01-orchestrator.agent.md
-│   ├── 02-planner.agent.md
-│   ├── 03-architect.agent.md
-│   ├── 04-coder.agent.md
-│   ├── 05-reviewer.agent.md
-│   └── 06-test-agent.agent.md
+│   ├── orchestrator.agent.md
+│   ├── planner.agent.md
+│   ├── architect.agent.md
+│   ├── coder.agent.md
+│   ├── reviewer.agent.md
+│   └── test-agent.agent.md
 ├── skills/
 │   ├── code-autofix/SKILL.md
 │   ├── conventional-commit/SKILL.md

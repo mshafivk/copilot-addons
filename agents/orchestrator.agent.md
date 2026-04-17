@@ -13,25 +13,25 @@ tools:
 model: gpt-4o
 user-invocable: true
 agents:
-  - 02-planner
-  - 03-architect
-  - 04-coder
-  - 05-reviewer
-  - 06-test-agent
+  - planner
+  - architect
+  - coder
+  - reviewer
+  - test-agent
 handoffs:
-  - agent: 02-planner
+  - agent: planner
     label: "→ Start Planning"
     prompt: "Analyse the feature request above and produce docs/ai/requirements.md"
-  - agent: 03-architect
+  - agent: architect
     label: "→ Design Architecture"
     prompt: "Read docs/ai/requirements.md and produce docs/ai/implementation-plan.md"
-  - agent: 04-coder
+  - agent: coder
     label: "→ Dispatch Coder"
     prompt: "Implement the next pending phase from docs/ai/implementation-plan.md following CODING_GUIDELINES.md"
-  - agent: 05-reviewer
+  - agent: reviewer
     label: "→ Review Phase"
     prompt: "Review the latest Coder commits against docs/ai/implementation-plan.md and CODING_GUIDELINES.md"
-  - agent: 06-test-agent
+  - agent: test-agent
     label: "→ Run Tests"
     prompt: "Verify the feature against the acceptance checklist in docs/ai/requirements.md Section 10"
 ---
