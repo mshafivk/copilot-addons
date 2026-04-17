@@ -1,5 +1,5 @@
 ---
-name: prettier-eslint
+name: code-autofix
 description: >
   Automatically format and lint all generated or modified JavaScript/TypeScript/React code
   using the project's existing Prettier and ESLint configuration — exactly like "Format on Save"
